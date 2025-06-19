@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "784176514994",
+    "project_id": "sluchapp-eb4c4",
+    "storage_bucket": "sluchapp-eb4c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784176514994:android:7a08d11c685903795146ab",
+        "android_client_info": {
+          "package_name": "com.example.sluchapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784176514994-bcp474be3thls9hd0eutu0m7k2t1iio9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sluchapp",
+            "certificate_hash": "a2f557faf6083b8ed86742f5b1fda0136200efae"
+          }
+        },
+        {
+          "client_id": "784176514994-82rmopo1lkmsmd2acvcnleqa2ha1ajpj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEXZLZq7xwJJgZLZgtgrt_-o2B1rB6QKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784176514994-82rmopo1lkmsmd2acvcnleqa2ha1ajpj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
