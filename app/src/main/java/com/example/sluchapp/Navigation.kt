@@ -13,7 +13,12 @@ sealed class Screen(val route: String) {
     object MusicMap : Screen("music_map")
     object MusicCalendar : Screen("music_calendar")
     object Login : Screen("login")
+
+    object TheoryDetail : Screen("theory/{topicId}") {
+        fun createRoute(topicId: String) = "theory/$topicId"
+    }
 }
+
 
 @Composable
 fun NavGraph(
@@ -35,7 +40,7 @@ fun NavGraph(
             EarTrainingScreen()
         }
         composable(Screen.Theory.route) {
-            TheoryScreen()
+            TheoryScreen(navController = navController)
         }
         composable(Screen.MusicMap.route) {
             MusicMapScreen()
@@ -52,6 +57,10 @@ fun NavGraph(
                     }
                 }
             )
+        }
+        composable(Screen.TheoryDetail.route) { backStackEntry ->
+            val topicId = backStackEntry.arguments?.getString("topicId") ?: return@composable
+            TheoryDetailScreen(topicId)
         }
     }
 }

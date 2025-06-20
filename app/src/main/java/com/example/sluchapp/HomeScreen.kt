@@ -20,13 +20,18 @@ import androidx.navigation.NavHostController
 import com.example.sluchapp.ui.theme.SluchAppTheme
 import com.google.firebase.auth.FirebaseUser
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
+
     private val authViewModel by viewModels<AuthViewModel>()
     private val loginViewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 🔥 Inicjalizacja Firebase (tylko jeśli nie masz własnej klasy Application)
+        FirebaseApp.initializeApp(this)
 
         setContent {
             SluchAppTheme {
@@ -43,6 +48,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)

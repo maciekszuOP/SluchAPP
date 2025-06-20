@@ -41,11 +41,13 @@ android {
 }
 
 dependencies {
-    // Google Sign-In
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
-    // Firebase Auth
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
+
+    implementation("com.google.firebase:firebase-firestore-ktx:25.1.4") // Firestore
+    implementation("com.google.firebase:firebase-auth-ktx:23.2.1") // jeśli nie masz jeszcze
+    implementation("com.google.android.gms:play-services-auth:21.3.0") // do logowania Google
+
     implementation ("androidx.navigation:navigation-compose:2.7.7")
     // (jeśli używasz Compose)
     implementation("androidx.compose.material:material:1.6.2")
