@@ -41,19 +41,19 @@ android {
 }
 
 dependencies {
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.coil.compose)
 
 
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.4") // Firestore
     implementation("com.google.firebase:firebase-auth-ktx:23.2.1") // jeśli nie masz jeszcze
     implementation("com.google.android.gms:play-services-auth:21.3.0") // do logowania Google
 
-    implementation ("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("androidx.navigation:navigation-compose:2.9.0")
     // (jeśli używasz Compose)
-    implementation("androidx.compose.material:material:1.6.2")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.activity.compose.v182)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
