@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.sluchapp.model.EarTrainingType
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -58,7 +57,6 @@ fun ExerciseQuizScreen(
                 val endTimeMillis = System.currentTimeMillis()
                 val durationMillis = endTimeMillis - startTimeMillis
 
-                // Nawigacja do ResultScreen z parametrami
                 navController.navigate(
                     Screen.ResultScreen.createRoute(
                         type = type,
@@ -68,9 +66,16 @@ fun ExerciseQuizScreen(
                         duration = durationMillis
                     )
                 )
-
             }
         }
+    }
+
+    // Kontrola animacji — brak na pierwszym pytaniu
+    val previousQuestion = remember { mutableStateOf<ExerciseQuestion?>(null) }
+    val shouldAnimate = remember(currentQuestion) {
+        val animate = previousQuestion.value != null && previousQuestion.value != currentQuestion
+        previousQuestion.value = currentQuestion
+        animate
     }
 
     Box(
@@ -81,8 +86,12 @@ fun ExerciseQuizScreen(
         AnimatedContent(
             targetState = currentQuestion,
             transitionSpec = {
-                slideInHorizontally { fullWidth -> fullWidth } + fadeIn() with
-                        slideOutHorizontally { fullWidth -> -fullWidth } + fadeOut()
+                if (!shouldAnimate) {
+                    EnterTransition.None with ExitTransition.None
+                } else {
+                    slideInHorizontally { fullWidth -> fullWidth } + fadeIn() with
+                            slideOutHorizontally { fullWidth -> -fullWidth } + fadeOut()
+                }
             },
             label = "QuestionTransition"
         ) { question ->

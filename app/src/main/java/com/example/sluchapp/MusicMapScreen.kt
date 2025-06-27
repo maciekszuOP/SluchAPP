@@ -85,7 +85,7 @@ fun MusicMapScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            contentAlignment = Alignment.BottomEnd
+            contentAlignment = Alignment.BottomStart
         ) {
             Button(onClick = {
                 navController.navigate(Screen.Home.route) {

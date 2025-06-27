@@ -2,7 +2,7 @@ package com.example.sluchapp.data
 
 import android.content.Context
 import com.example.sluchapp.ExerciseQuestion
-import com.example.sluchapp.model.EarTrainingType
+import com.example.sluchapp.EarTrainingType
 
 object QuestionRepository {
 

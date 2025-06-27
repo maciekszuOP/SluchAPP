@@ -12,8 +12,11 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavHostController
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 
 data class TheoryTutorial(
     val title: String = "",
@@ -23,7 +26,7 @@ data class TheoryTutorial(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TheoryDetailScreen(topicId: String) {
+fun TheoryDetailScreen(topicId: String, navController: NavHostController) {
     val scope = rememberCoroutineScope()
     var tutorial by remember { mutableStateOf<TheoryTutorial?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -39,8 +42,13 @@ fun TheoryDetailScreen(topicId: String) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(tutorial?.title ?: "Teoria") }
+            CenterAlignedTopAppBar(
+                title = { Text(tutorial?.title ?: "Teoria") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Wstecz")
+                    }
+                }
             )
         }
     ) { padding ->

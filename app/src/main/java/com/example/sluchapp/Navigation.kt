@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.NavType
-import com.example.sluchapp.model.EarTrainingType
 import com.example.sluchapp.ui.EarTrainingScreen
 import com.google.firebase.auth.FirebaseUser
 import java.net.URLEncoder
@@ -69,8 +68,14 @@ fun NavGraph(
 
         composable(Screen.EarTraining.route) {
             EarTrainingScreen(
+                user = user,
+                onLogoutClick = onLogout,
+                navController = navController,
                 onExerciseSelected = { type ->
                     navController.navigate(Screen.ExerciseLevelSelection.createRoute(type))
+                },
+                onBack = {
+                    navController.popBackStack()
                 }
             )
         }
@@ -83,9 +88,8 @@ fun NavGraph(
             MusicMapScreen(navController = navController)
         }
 
-
         composable(Screen.MusicCalendar.route) {
-            MusicCalendarScreen()
+            MusicCalendarScreen(navController = navController)
         }
 
         composable(Screen.Login.route) {
@@ -101,7 +105,7 @@ fun NavGraph(
 
         composable(Screen.TheoryDetail.route) { backStackEntry ->
             val topicId = backStackEntry.arguments?.getString("topicId") ?: return@composable
-            TheoryDetailScreen(topicId)
+            TheoryDetailScreen(topicId = topicId, navController = navController)
         }
 
         composable(Screen.ExerciseLevelSelection.route) { backStackEntry ->
@@ -111,7 +115,8 @@ fun NavGraph(
                 type = type,
                 onLevelSelected = { level ->
                     navController.navigate(Screen.ExerciseQuiz.createRoute(type, level))
-                }
+                },
+                onBack = { navController.popBackStack() }
             )
         }
 
