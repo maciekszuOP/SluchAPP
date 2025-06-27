@@ -30,8 +30,11 @@ fun ExerciseQuizScreen(
     var selectedAnswerIndex by remember { mutableStateOf<Int?>(null) }
     var showFeedback by remember { mutableStateOf(false) }
     var isCorrect by remember { mutableStateOf(false) }
+    var correctAnswersCount by remember { mutableStateOf(0) }
 
     val currentQuestion = questions.getOrNull(currentIndex) ?: return
+
+    val startTimeMillis = remember { System.currentTimeMillis() }
 
     val mediaPlayer = remember(currentQuestion.audioResId) {
         MediaPlayer.create(context, currentQuestion.audioResId)
@@ -48,10 +51,24 @@ fun ExerciseQuizScreen(
             delay(800)
             showFeedback = false
             selectedAnswerIndex = null
+
             if (currentIndex < totalQuestions - 1) {
                 currentIndex++
             } else {
-                // TODO: Nawigacja do ekranu wyników lub restart quizu
+                val endTimeMillis = System.currentTimeMillis()
+                val durationMillis = endTimeMillis - startTimeMillis
+
+                // Nawigacja do ResultScreen z parametrami
+                navController.navigate(
+                    Screen.ResultScreen.createRoute(
+                        type = type,
+                        level = level,
+                        correctAnswers = correctAnswersCount,
+                        totalQuestions = totalQuestions,
+                        duration = durationMillis
+                    )
+                )
+
             }
         }
     }
@@ -76,8 +93,8 @@ fun ExerciseQuizScreen(
                     .fillMaxSize()
                     .background(
                         when {
-                            showFeedback && isCorrect -> Color(0xFFDFF0D8) // zielony
-                            showFeedback && !isCorrect -> Color(0xFFF2DEDE) // czerwony
+                            showFeedback && isCorrect -> Color(0xFFDFF0D8)
+                            showFeedback && !isCorrect -> Color(0xFFF2DEDE)
                             else -> MaterialTheme.colorScheme.background
                         }
                     )
@@ -116,14 +133,14 @@ fun ExerciseQuizScreen(
                             if (!showFeedback) {
                                 selectedAnswerIndex = index
                                 isCorrect = index == question.correctAnswerIndex
+                                if (isCorrect) correctAnswersCount++
                                 showFeedback = true
-                                // TODO: Zapis wyniku do Firebase
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = when {
-                                showFeedback && selectedAnswerIndex == index && index == question.correctAnswerIndex -> Color(0xFF4CAF50) // zielony
-                                showFeedback && selectedAnswerIndex == index && index != question.correctAnswerIndex -> Color(0xFFF44336) // czerwony
+                                showFeedback && selectedAnswerIndex == index && index == question.correctAnswerIndex -> Color(0xFF4CAF50)
+                                showFeedback && selectedAnswerIndex == index && index != question.correctAnswerIndex -> Color(0xFFF44336)
                                 else -> MaterialTheme.colorScheme.primary
                             }
                         ),

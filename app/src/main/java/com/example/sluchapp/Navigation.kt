@@ -10,6 +10,8 @@ import androidx.navigation.NavType
 import com.example.sluchapp.model.EarTrainingType
 import com.example.sluchapp.ui.EarTrainingScreen
 import com.google.firebase.auth.FirebaseUser
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 sealed class Screen(val route: String) {
     object Home : Screen("home")
@@ -31,6 +33,19 @@ sealed class Screen(val route: String) {
         fun createRoute(type: EarTrainingType, level: String) =
             "exercise_quiz/${type.name}/$level"
     }
+
+    object ResultScreen : Screen("results/{type}/{level}/{correctAnswers}/{totalQuestions}/{duration}") {
+        fun createRoute(
+            type: EarTrainingType,
+            level: String,
+            correctAnswers: Int,
+            totalQuestions: Int,
+            duration: Long
+        ): String {
+            val encodedLevel = URLEncoder.encode(level, StandardCharsets.UTF_8.toString())
+            return "results/${type.name}/$encodedLevel/$correctAnswers/$totalQuestions/$duration"
+        }
+    }
 }
 
 @Composable
@@ -40,7 +55,7 @@ fun NavGraph(
     loginViewModel: LoginViewModel,
     onLogout: () -> Unit
 ) {
-    val context = LocalContext.current  // możesz mieć jeśli gdzieś potrzebujesz
+    val context = LocalContext.current
 
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
@@ -65,8 +80,9 @@ fun NavGraph(
         }
 
         composable(Screen.MusicMap.route) {
-            MusicMapScreen()
+            MusicMapScreen(navController = navController)
         }
+
 
         composable(Screen.MusicCalendar.route) {
             MusicCalendarScreen()
@@ -111,10 +127,8 @@ fun NavGraph(
             )
             val level = backStackEntry.arguments?.getString("level") ?: return@composable
 
-            val context = LocalContext.current
-
             val allQuestions = com.example.sluchapp.data.QuestionRepository.getQuestions(context, type, level)
-            val questions = List(5) { allQuestions.random() } // 🎯 losujemy 5 pytań z powtórzeniami
+            val questions = List(5) { allQuestions.random() }
 
             ExerciseQuizScreen(
                 type = type,
@@ -124,7 +138,30 @@ fun NavGraph(
             )
         }
 
+        composable(
+            route = Screen.ResultScreen.route,
+            arguments = listOf(
+                navArgument("type") { type = NavType.StringType },
+                navArgument("level") { type = NavType.StringType },
+                navArgument("correctAnswers") { type = NavType.IntType },
+                navArgument("totalQuestions") { type = NavType.IntType },
+                navArgument("duration") { type = NavType.LongType }
+            )
+        ) { backStackEntry ->
+            val type = EarTrainingType.valueOf(backStackEntry.arguments?.getString("type") ?: return@composable)
+            val level = backStackEntry.arguments?.getString("level") ?: return@composable
+            val correctAnswers = backStackEntry.arguments?.getInt("correctAnswers") ?: 0
+            val totalQuestions = backStackEntry.arguments?.getInt("totalQuestions") ?: 0
+            val duration = backStackEntry.arguments?.getLong("duration") ?: 0L
 
-
+            ResultScreen(
+                type = type,
+                level = level,
+                correctAnswers = correctAnswers,
+                totalQuestions = totalQuestions,
+                duration = duration,
+                navController = navController
+            )
+        }
     }
 }

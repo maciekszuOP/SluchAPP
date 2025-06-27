@@ -15,7 +15,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -42,7 +41,14 @@ android {
 
 dependencies {
     implementation(libs.coil.compose)
-
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+    implementation("com.google.firebase:firebase-auth:23.2.1")
+    implementation (libs.jetbrains.kotlinx.coroutines.play.services)
+    implementation("com.google.maps.android:maps-compose:4.2.0")
+    implementation (libs.accompanist.permissions)  // lub najnowsza wersja
+    implementation (libs.jetbrains.kotlinx.coroutines.play.services) // dla await()
+    implementation ("com.google.android.gms:play-services-location:21.3.0")  // lokalizacja
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 
     implementation("com.google.firebase:firebase-firestore-ktx:25.1.4") // Firestore
     implementation("com.google.firebase:firebase-auth-ktx:23.2.1") // jeśli nie masz jeszcze
